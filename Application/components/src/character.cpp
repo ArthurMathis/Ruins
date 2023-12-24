@@ -4,8 +4,12 @@
 
 #include "../header/character.h"
 
-character::character(int health, int strength)
-    : d_health{health}, d_strength{strength} {}
+const std::string character::CHAR_ADVENTURER = "adventurer";
+const std::string character::CHAR_MONSTER = "monster";
+const std::string character::CHAR_BLINDMONSTER = "blindmonster";
+
+character::character(int health, int strength, std::string type)
+    : d_health{health}, d_strength{strength}, d_type{type} {}
 
 int character::health() const {
     // Renvoi du nombre de points de vie
@@ -20,6 +24,11 @@ int character::strength() const {
 coord character::position() const {
     // Renvoi du point de coordonnées
     return d_coord;
+}
+
+std::string character::type() const {
+    // Renvoi du type du personnage
+    return d_type;
 }
 
 void character::move(int x, int y) {

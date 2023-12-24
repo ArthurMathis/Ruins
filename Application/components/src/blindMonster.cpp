@@ -5,10 +5,10 @@
 #include <cstdlib>
 #include "../header/blindMonster.h"
 
-blindMonster::blindMonster(int health, int strength, double hability)
-    : monster{health, strength, hability} {}
+blindMonster::blindMonster(int health, int strength, double hability, std::string type)
+    : monster{health, strength, hability, type} {}
 
-void blindMonster::move() {
+void blindMonster::move(const adventurer &adventurer) {
     // Déclaration des variables de coordonnées
     int X, Y;
     // Génération d'un nombre aléatoire entre -1 et 1 pour le déplacement aléatoire

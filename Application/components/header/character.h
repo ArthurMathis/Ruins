@@ -10,11 +10,19 @@
 class character {
 public:
     /**
+     * @brief Les différents types de personnage
+     */
+    static const std::string CHAR_ADVENTURER;
+    static const std::string CHAR_MONSTER;
+    static const std::string CHAR_BLINDMONSTER;
+
+    /**
      * @brief Constructeur par valeurs
      * @param health Les points de vie du personnage
      * @param strength Les points d'attaque du personnage
+     * @param type Le type du personnage
      */
-    character(int health, int strength);
+    character(int health, int strength, std::string type);
     /**
      * @brief Destructeur par défaut
      */
@@ -35,6 +43,11 @@ public:
      * @return point de coordonnées
      */
     coord position() const;
+    /**
+     * @brief Fonction renvoyant le type du personnage
+     * @return chaîne contenant le type du personnage
+     */
+     std::string type() const;
 
     /**
      * @brief Méthode permettant de déplacer un personnage
@@ -76,6 +89,9 @@ protected:
 private:
     /// Coordonnées du character
     coord d_coord;
+
+    /// Type du personnage
+    std::string d_type;
 };
 
 

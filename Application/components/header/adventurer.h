@@ -21,7 +21,18 @@ public:
      * @param health - Points de vie
      * @param strength - Points de force
      */
-    adventurer(int swordSolidity = 90, int armorSolidity = 10, int coin = 0, int health = 100, int strength = 10);
+    adventurer(int swordSolidity = 90, int armorSolidity = 10, int coin = 0, int health = 100, int strength = 10, std::string type = "adventurer");
+
+    /**
+     * @brief Méthdoe retournant l'armure du joueur
+     * @return
+     */
+    armor getArmor() const;
+    /**
+     * @brief Méthode retournant l'épée du joueur
+     * @return
+     */
+    sword getSword() const;
 
     /**
       * @brief Fonction renvoyant le nombre de pièces

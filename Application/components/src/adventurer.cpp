@@ -5,15 +5,24 @@
 #include <cstdlib>
 #include "../header/adventurer.h"
 
-using std::cout, std::cin;
+using std::cout;
+using std::cin;
 
-adventurer::adventurer(int swordSolidity, int armorSolidity, int coin, int health, int strength)
-        : character{health, strength}, d_coins{coin}, d_sword{swordSolidity},
+adventurer::adventurer(int swordSolidity, int armorSolidity, int coin, int health, int strength, std::string type)
+        : character{health, strength, type}, d_coins{coin}, d_sword{swordSolidity},
         d_armor{armorSolidity} {}
 
 int adventurer::coins() const {
     // Renvoi du nombre de pièces
     return d_coins;
+}
+
+armor adventurer::getArmor() const{
+    return d_armor;
+}
+
+sword adventurer::getSword() const{
+    return d_sword;
 }
 
 void adventurer::attack(character &c) {
@@ -27,6 +36,16 @@ void adventurer::attack(character &c) {
 
     // Lancement de l'attaque sur le personnage c
     c.hasBeenAttacked(attackStrength);
+
+    //Recupérer les points de force de l'enemie s'il est mort
+    if(c.isDead())
+    {
+        int enemyStrength = c.strength();
+
+        // un quart s’ajoute à ses points de force et les trois quart à ses points de vie
+        d_strength += static_cast<int>(enemyStrength * 0.25);
+        d_health += static_cast<int>(enemyStrength * 0.75);
+    }
 
     // Réduction des points de solidité de l'épée
     d_sword.reduce(1);

@@ -5,17 +5,13 @@
 #include <cstdlib>
 #include "../header/monster.h"
 
-monster::monster(int health, int strength, double hability, class adventurer *adventurer)
-    : character{health, strength}, d_hability{hability},
-    d_adventurer{adventurer} {}
+monster::monster(int health, int strength, double hability, std::string type)
+    : character{health, strength, type}, d_hability{hability}
+{}
 
 int monster::hability() const {
     // Renvoi du pourcentage d'habilité
     return d_hability;
-}
-
-adventurer* monster::adventurer() const {
-    return d_adventurer;
 }
 
 void monster::attack(character &c) {
@@ -36,31 +32,38 @@ void monster::hasBeenAttacked(int attackStrengthPoints) {
     getDamaged(monsterDamage);
 }
 
-bool monster::isClose() const {
+bool monster::isClose(const adventurer &adventurer) const {
     // Calcul de la distance entre le monstre et l'aventurier
-    int distance = position().distance(d_adventurer->position());
+    int distance = position().distance(adventurer.position());
     // Renvoi de vrai si la distance est inférieur à 8
     return distance < 8;
 }
 
-int monster::direction() const {
-    if(position().y() > d_adventurer->position().y()){
-        if(position().x() > d_adventurer->position().x()) return 5;
-        if(position().x() < d_adventurer->position().x()) return 6;
+int monster::direction(const adventurer &adventurer) const 
+{
+    if(position().y() > adventurer.position().y())
+    {
+        if(position().x() > adventurer.position().x()) return 5;
+        if(position().x() < adventurer.position().x()) return 6;
         return 1;
-    } else if(position().y() < d_adventurer->position().y()){
-        if(position().x() > d_adventurer->position().x()) return 7;
-        if(position().x() < d_adventurer->position().x()) return 8;
-        return 2;
-    } else {
-        if(position().x() > d_adventurer->position().x()) return 4;
-        if(position().x() < d_adventurer->position().x()) return 3;
     }
+    else if(position().y() < adventurer.position().y())
+    {
+        if(position().x() > adventurer.position().x()) return 7;
+        if(position().x() < adventurer.position().x()) return 8;
+        return 2;
+    }
+    else
+    {
+        if(position().x() > adventurer.position().x()) return 4;
+        // if(position().x() < d_adventurer.position().x()) return 3;
+    }
+    return 3;
 }
 
-void monster::move() {
-    if(isClose()) {
-        int d = direction();
+void monster::move(const adventurer &adventurer) {
+    if(isClose(adventurer)) {
+        int d = direction(adventurer);
         switch (d) {
             case 1 : character::move(position().x(), position().y() + 1);
                 break;

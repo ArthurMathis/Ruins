@@ -10,7 +10,6 @@ public:
     equipment(int solidity);
     /**
         * @brief Renvoie le solidité de l'équipement
-        *
         * @return int
         */
     int solidity() const;

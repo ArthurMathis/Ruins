@@ -1,0 +1,10 @@
+E E E E W W W W W W E E
+E E E E W M R R A W E E
+E E E E W C2 R B R W E E
+W W W W W B R R M W E E
+W M R R R R R R R W E E
+W R C6 R B R R R B C1 W E
+P R R R R R C3 R R W E E
+W R R W R R R M C8 W E E
+W B R W B C1 W W W W E E
+W W W W W W W E E E E E

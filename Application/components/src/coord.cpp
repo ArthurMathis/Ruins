@@ -51,11 +51,11 @@ void coord::moveOn(int x, int y)
  * @param deltax Le déplacement en abscisse.
  * @param deltay Le déplacement en ordonnée.
  */
-/*void coord::moveOff(int deltax, int deltay)
+void coord::moveOff(int deltax, int deltay)
 {
     d_x += deltax;
     d_y += deltay;
-}*/
+}
 
 /**
  * @brief Renvoie la distance entre le point courant et un autre point p.

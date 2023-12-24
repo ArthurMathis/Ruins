@@ -9,6 +9,7 @@ int equipment::solidity() const {
 
 void equipment::reduce(int nb) {
     if(nb > 0) d_solidity -= nb;
+    if(d_solidity < 0) d_solidity = 0;
 }
 void equipment::increase(int nb) {
     if(nb > 0) d_solidity += nb;

@@ -1,13 +1,13 @@
 #include "doctest.h"
-#include "../components/header/point.h"
+#include "../components/header/coord.h"
 
 /**
- * @brief Teste la construction des points et la récupération des coordonnées avec les getters.
+ * @brief Teste la construction des coords et la récupération des coordonnées avec les getters.
  */
-TEST_CASE("[point] Les points sont bien construits et que les Getter nous renvoyent les coordonnees")
+TEST_CASE("[coord] Les coords sont bien construits et que les Getter nous renvoyent les coordonnees")
 {
     SUBCASE("constructeur par defaut") {
-        point p{};
+        coord p{};
         int nul = 0;
         REQUIRE_EQ(p.x(), nul);
         REQUIRE_EQ(p.y(), nul);
@@ -16,28 +16,28 @@ TEST_CASE("[point] Les points sont bien construits et que les Getter nous renvoy
     {
         int x = 2;
         int y = 3;
-        point p{x, y};
+        coord p{x, y};
         REQUIRE_EQ(p.x(), x);
         REQUIRE_EQ(p.y(), y);
     }
 }
 
 /**
- * @brief Teste la modification de la position des points.
+ * @brief Teste la modification de la position des coords.
  */
-TEST_CASE("[point] Les replacement des points ")
+TEST_CASE("[coord] Les replacement des coords ")
 {
     SUBCASE("modification de la position")
     {
         int x = 2, y = 3;
-        point p{};
+        coord p{};
         p.moveOn(x, y);
         REQUIRE_EQ(p.x(), x);
         REQUIRE_EQ(p.y(), y);
     }
     SUBCASE("modification de la position à l'aide de coeficient")
     {
-        point p{1, 2};
+        coord p{1, 2};
         p.moveOff(1, 1);
         REQUIRE(p.x() == 2);
         REQUIRE(p.y() == 3);
@@ -45,47 +45,47 @@ TEST_CASE("[point] Les replacement des points ")
 }
 
 /**
- * @brief Teste les surcharges des opérateurs concernant les points.
+ * @brief Teste les surcharges des opérateurs concernant les coords.
  */
-TEST_CASE("[point] Les surcharges des operateurs concernant les points ")
+TEST_CASE("[coord] Les surcharges des operateurs concernant les coords ")
 {
-    SUBCASE("[point] Les surcharges des operateurs de test d'égalité")
+    SUBCASE("[coord] Les surcharges des operateurs de test d'égalité")
     {
-        SUBCASE("[point] la surcharge  == ")
+        SUBCASE("[coord] la surcharge  == ")
         {
-            point p1{1, 2};
-            point p2{1, 2};
+            coord p1{1, 2};
+            coord p2{1, 2};
             REQUIRE_EQ(p1, p2);
         }
-        SUBCASE("[point] La surcharge  =!= ")
+        SUBCASE("[coord] La surcharge  =!= ")
         {
-            point p1{1, 2};
-            point p2{3, 2};
+            coord p1{1, 2};
+            coord p2{3, 2};
             REQUIRE_NE(p1, p2);
         }
     }
-    SUBCASE("[point] Les surcharges de +=")
+    SUBCASE("[coord] Les surcharges de +=")
     {
-        point p1{1, 2};
-        point p2{3, 2};
-        point p3 = p1;
+        coord p1{1, 2};
+        coord p2{3, 2};
+        coord p3 = p1;
         p1 += p2;
         REQUIRE_EQ(p1.x(), p2.x() + p3.x());
         REQUIRE_EQ(p1.y(), p2.y() + p3.y());
     }
-    SUBCASE("[point] Les surcharges de -=")
+    SUBCASE("[coord] Les surcharges de -=")
     {
-        point p1{2, 2};
-        point p2{1, 1};
-        point p3 = p1;
+        coord p1{2, 2};
+        coord p2{1, 1};
+        coord p3 = p1;
         p1 -= p2;
         REQUIRE_EQ(p1.x(), p3.x() - p2.x());
         REQUIRE_EQ(p1.y(), p3.y() - p2.y());
     }
-    SUBCASE("[point] Les surcharges de =")
+    SUBCASE("[coord] Les surcharges de =")
     {
-        point p1{2, 2};
-        point p3 = p1;
+        coord p1{2, 2};
+        coord p3 = p1;
         REQUIRE_EQ(p3.x(), p1.x());
         REQUIRE_EQ(p3.y(), p1.y());
     }

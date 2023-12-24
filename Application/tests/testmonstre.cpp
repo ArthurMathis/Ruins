@@ -180,8 +180,8 @@ TEST_SUITE("Test de monster"){
         }
     }
 
-    TEST_SUITE("Test de déplacement vers le joueur"){
-        SCENARIO("Vérification de la méthode direction 1"){
+    TEST_SUITE("Test de déplacement vers le joueur") {
+        SCENARIO("Vérification de la méthode direction 1") {
             GIVEN("Initialisation d'un monster"){
                 adventurer *p{new adventurer{}};
                 p->move(1,0);
