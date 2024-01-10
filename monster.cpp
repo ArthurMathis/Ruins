@@ -130,8 +130,8 @@ void monster::show(display &d) const
 }
 
 void monster::reset() {
-    d_health = 100;
-    d_strength = 10;
+    d_health = DEFAULT_HEALTH;
+    d_strength = DEFAULT_STRENGTH;
 }
 
 void monster::info() const

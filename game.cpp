@@ -9,7 +9,7 @@ void clrscr()
 {
     #ifdef _WIN32
 	    system("cls");
-	#elif __unix__
+	#else
 	    system("clear");
 	#endif
 }

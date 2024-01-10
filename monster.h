@@ -13,6 +13,10 @@
 class castle;
 class monster : public character {
 public :
+    static constexpr int DEFAULT_HEALTH = 100;
+    static constexpr int DEFAULT_STRENGTH = 10;
+    static constexpr double DEFAULT_HABILITY = 90;
+
     /**
      * @brief Constructeur par valeurs
      * @param health Les points de vie du monstre
@@ -20,7 +24,7 @@ public :
      * @param hability Son taux d'habilieté au coups critiques
      * @param type Type monstre voyant
      */
-    monster(int health = 100, int strength = 10, double hability = 90, std::string type = "monster");
+    monster(int health = DEFAULT_HEALTH, int strength = DEFAULT_STRENGTH, double hability = DEFAULT_HABILITY, std::string type = "monster");
     /**
       * @brief Destructeur par défaut
       */

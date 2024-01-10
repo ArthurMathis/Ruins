@@ -15,6 +15,12 @@ using std::string;
 
 class adventurer : public character {
 public:
+    static constexpr int DEFAULT_SWORDSOLIDITY = 90;
+    static constexpr int DEFAULT_ARMORSOLIDITY = 10;
+    static constexpr int DEFAULT_COINS = 0;
+    static constexpr int DEFAULT_HEALTH = 100;
+    static constexpr int DEFAULT_STRENGTH = 10;
+
     /**
      * @brief Constructeur par valeurs
      * @param swordSolidity - Solidité de l'épée
@@ -23,7 +29,12 @@ public:
      * @param health - Points de vie
      * @param strength - Points de force
      */
-    adventurer(int swordSolidity = 90, int armorSolidity = 10, int coin = 0, int health = 100, int strength = 10, std::string type = "adventurer");
+    adventurer(int swordSolidity = DEFAULT_SWORDSOLIDITY,
+               int armorSolidity = DEFAULT_ARMORSOLIDITY,
+               int coin = DEFAULT_COINS,
+               int health = DEFAULT_HEALTH,
+               int strength = DEFAULT_STRENGTH,
+               std::string type = "adventurer");
 
     /**
       * @brief Fonction renvoyant le nombre de pièces
