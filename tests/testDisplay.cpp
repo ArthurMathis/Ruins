@@ -1,5 +1,7 @@
 #include "doctest.h"
 #include "../display.h"
+#include <iostream>
+#include <sstream>
 
 TEST_CASE("[display] Tests des fonctions de la classe display")
 {
@@ -7,91 +9,126 @@ TEST_CASE("[display] Tests des fonctions de la classe display")
 
     SUBCASE("Test de displayAdventurer()")
     {
-        std::stringstream buffer;
-        std::streambuf* old = std::cout.rdbuf(buffer.rdbuf());
+        std::ostringstream oss;
+        std::streambuf* old = std::cout.rdbuf(oss.rdbuf());
 
         objetAffichage.displayAdventurer();
 
-        std::string sortie = buffer.str();
-        REQUIRE_EQ(sortie, "A");
+        std::string sortie = oss.str();
+        // Vérifier si la sortie contient "P" et la couleur blanche
+        REQUIRE(sortie.find("P") != std::string::npos);
+        REQUIRE(sortie.find(display::WHITE) != std::string::npos);
 
         std::cout.rdbuf(old);
     }
 
     SUBCASE("Test de displayMonster()")
     {
-        std::stringstream buffer;
-        std::streambuf* old = std::cout.rdbuf(buffer.rdbuf());
+        std::ostringstream oss;
+        std::streambuf* old = std::cout.rdbuf(oss.rdbuf());
 
         objetAffichage.displayMonster();
 
-        std::string sortie = buffer.str();
-        REQUIRE_EQ(sortie, "M");
+        std::string sortie = oss.str();
+
+        // Vérifier si la sortie contient "M" et la couleur rouge
+        REQUIRE(sortie.find("M") != std::string::npos);
+        REQUIRE(sortie.find(display::RED) != std::string::npos);
 
         std::cout.rdbuf(old);
     }
 
     SUBCASE("Test de displayBlindMonster()")
     {
-        std::stringstream buffer;
-        std::streambuf* old = std::cout.rdbuf(buffer.rdbuf());
+        std::ostringstream oss;
+        std::streambuf* old = std::cout.rdbuf(oss.rdbuf());
 
         objetAffichage.displayBlindMonster();
 
-        std::string sortie = buffer.str();
-        REQUIRE_EQ(sortie, "m");
+        std::string sortie = oss.str();
+
+        // Vérifier si la sortie contient "W" et la couleur violette
+        REQUIRE(sortie.find("W") != std::string::npos);
+        REQUIRE(sortie.find(display::PURPLE) != std::string::npos);
+
+        std::cout.rdbuf(old);
+    }
+
+    SUBCASE("Test de displayAmulet()")
+    {
+        std::ostringstream oss;
+        std::streambuf* old = std::cout.rdbuf(oss.rdbuf());
+
+        objetAffichage.displayAmulet();
+
+        std::string sortie = oss.str();
+
+        // Vérifier si la sortie contient "A" et la couleur cyan
+        REQUIRE(sortie.find("A") != std::string::npos);
+        REQUIRE(sortie.find(display::CYAN) != std::string::npos);
 
         std::cout.rdbuf(old);
     }
 
     SUBCASE("Test de displayWall()")
     {
-        std::stringstream buffer;
-        std::streambuf* old = std::cout.rdbuf(buffer.rdbuf());
+        std::ostringstream oss;
+        std::streambuf* old = std::cout.rdbuf(oss.rdbuf());
 
         objetAffichage.displayWall();
 
-        std::string sortie = buffer.str();
-        REQUIRE_EQ(sortie, "#");
+        std::string sortie = oss.str();
+
+        // Vérifier si la sortie contient "#" et la couleur noire
+        REQUIRE(sortie.find("#") != std::string::npos);
+        REQUIRE(sortie.find(display::BLACK) != std::string::npos);
 
         std::cout.rdbuf(old);
     }
 
     SUBCASE("Test de displayEmptyCase()")
     {
-        std::stringstream buffer;
-        std::streambuf* old = std::cout.rdbuf(buffer.rdbuf());
+        std::ostringstream oss;
+        std::streambuf* old = std::cout.rdbuf(oss.rdbuf());
 
         objetAffichage.displayEmptyCase();
 
-        std::string sortie = buffer.str();
-        REQUIRE_EQ(sortie, "_");
+        std::string sortie = oss.str();
+
+        // Vérifier si la sortie contient un espace (case vide)
+        REQUIRE(sortie.find(" ") != std::string::npos);
 
         std::cout.rdbuf(old);
     }
 
     SUBCASE("Test de displayExternCase()")
     {
-        std::stringstream buffer;
-        std::streambuf* old = std::cout.rdbuf(buffer.rdbuf());
+        std::ostringstream oss;
+        std::streambuf* old = std::cout.rdbuf(oss.rdbuf());
 
         objetAffichage.displayExternCase();
 
-        std::string sortie = buffer.str();
-        REQUIRE_EQ(sortie, "X");
+        std::string sortie = oss.str();
+
+        // Vérifier si la sortie contient "X" et la couleur verte
+        REQUIRE(sortie.find("X") != std::string::npos);
+        REQUIRE(sortie.find(display::GREEN) != std::string::npos);
 
         std::cout.rdbuf(old);
     }
 
     SUBCASE("Test de displayCoin()")
     {
-        std::stringstream buffer;
-        std::streambuf* old = std::cout.rdbuf(buffer.rdbuf());
+        std::ostringstream oss;
+        std::streambuf* old = std::cout.rdbuf(oss.rdbuf());
 
         objetAffichage.displayCoin();
 
-        std::string sortie = buffer.str();
-        REQUIRE_EQ(sortie, "o");
+        std::string sortie = oss.str();
+
+        // Vérifier si la sortie contient "O" et la couleur jaune
+        REQUIRE(sortie.find("O") != std::string::npos);
+        REQUIRE(sortie.find(display::YELLOW) != std::string::npos);
 
         std::cout.rdbuf(old);
     }
