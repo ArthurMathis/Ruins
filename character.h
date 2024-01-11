@@ -6,7 +6,7 @@
 #define QUALITE_DE_PROG_CHARACTER_H
 
 #include "coord.h"
-#include "display.h"
+#include "displayConsole.h"
 
 
 class character {

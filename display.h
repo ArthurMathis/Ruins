@@ -5,54 +5,45 @@
 
 class display {
 public:
-    /// Couleurs pour l'affichage.
-    static const std::string BLACK;
-    static const std::string RED;
-    static const std::string GREEN;
-    static const std::string YELLOW;
-    static const std::string WHITE;
-    static const std::string PURPLE;
-    static const std::string CYAN;
-
     /**
      * @brief Affiche la représentation graphique d'un aventurier.
      */
-    void displayAdventurer();
+    virtual void displayAdventurer() const = 0;
 
     /**
      * @brief Affiche la représentation graphique d'un monstre.
      */
-    void displayMonster();
+    virtual void displayMonster() const = 0;
 
     /**
      * @brief Affiche la représentation graphique d'un monstre aveugle.
      */
-    void displayBlindMonster();
+    virtual void displayBlindMonster() const = 0;
 
     /**
      * @brief Affiche la représentation graphique d'un amulette.
      */
-    void displayAmulet();
+    virtual void displayAmulet() const = 0;
 
     /**
      * @brief Affiche la représentation graphique d'un mur.
      */
-    void displayWall();
+    virtual void displayWall() const = 0;
 
     /**
      * @brief Affiche la représentation graphique d'une case vide.
      */
-    void displayEmptyCase();
+    virtual void displayEmptyCase() const = 0;
 
     /**
      * @brief Affiche la représentation graphique d'une case externe.
      */
-    void displayExternCase();
+    virtual void displayExternCase() const = 0;
 
     /**
      * @brief Affiche la représentation graphique d'une pièce de monnaie.
      */
-    void displayCoin();
+    virtual void displayCoin() const = 0;
 };
 
 #endif // PROJET_DISPLAY_H

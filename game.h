@@ -173,7 +173,7 @@ private:
     /// Vecteur de pointeurs partagés vers les objets monstre.
     vector<std::shared_ptr<monster>> d_monsters;
     /// Objet de la classe display.
-    display d;
+    displayConsole d;
     /// Objet de la classe castle représentant le château du jeu.
     castle d_castle;
     /// Coordonnées de l'entrée du château.
