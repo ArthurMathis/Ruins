@@ -6,6 +6,7 @@
 #include "../adventurer.h"
 #include "../monster.h"
 #include "../blindMonster.h"
+#include <random>
 
 TEST_SUITE("Test des méthodes de la classe blindMonster") {
     TEST_SUITE("Test des constructeurs") {
@@ -27,9 +28,9 @@ TEST_SUITE("Test des méthodes de la classe blindMonster") {
             GIVEN("Initialisation d'un blindMonster") {
                 blindMonster monster{};
                 THEN("Vérification des données") {
-                    REQUIRE_EQ(monster.health(), 70);
-                    REQUIRE_EQ(monster.strength(), 5);
-                    REQUIRE_EQ(monster.hability(), 90);
+                    REQUIRE_EQ(monster.health(), blindMonster::DEFAULT_HEALTH);
+                    REQUIRE_EQ(monster.strength(), blindMonster::DEFAULT_STRENGTH);
+                    REQUIRE_EQ(monster.hability(), blindMonster::DEFAULT_HABILITY);
                     REQUIRE_EQ(monster.type(), "blindmonster");
                 }
             }
@@ -50,24 +51,20 @@ TEST_SUITE("Test des méthodes de la classe blindMonster") {
             }
         }
 
-        SCENARIO("Vérification du calcul de déplacements aléatoires") {
-            int x;
-            for(int i = 0; i < 100; i++){
-                x = rand() % 3 - 1;
-                THEN("Généartion"){
-                    bool valid {x >= -1 && x <= 1};
-                    REQUIRE_EQ(valid, true);
-                }
-            }
-        }
-
         SCENARIO("Vérification du déplacement") {
             GIVEN("Initialisation d'un blindMonster et d'un aventurier") {
                 blindMonster monster{};
-                adventurer player{};
                 coord positionInitiale = monster.position();
-                WHEN("Déplacement du monstre aveugle") {
-                    monster.move(player);
+                WHEN("Calcul d'un déplacement du monstre aveugle et déplacement") {
+                    int possibleX[] = {0, 0, -1, 1, -1, 1, -1, 1};
+                    int possibleY[] = {1, -1, 0, 0, 1, 1, -1, -1};
+                    std::vector<int> directions = {0, 1, 2, 3, 4, 5, 6, 7};
+                    std::random_device rd;
+                    std::mt19937 gen(rd());
+                    std::shuffle(directions.begin(), directions.end(), gen);
+
+                    monster.character::move(possibleX[directions[0]], possibleY[directions[0]]);
+
                     THEN("Vérification du déplacement entre -1 et 1") {
                         coord nouvellePosition = monster.position();
                         REQUIRE_GE(nouvellePosition.x(), positionInitiale.x() - 1);

@@ -9,6 +9,10 @@
 
 class blindMonster : public monster {
 public:
+    static constexpr int DEFAULT_HEALTH = 70;
+    static constexpr int DEFAULT_STRENGTH = 5;
+    static constexpr double DEFAULT_HABILITY = 90;
+
     /**
      * @brief Constructeur par valeurs
      * @param health Les points de vie du monstre
@@ -16,7 +20,7 @@ public:
      * @param hability Pourcentage d'habilieté du monstre
      * @param type Type monstre aveugle
      */
-    blindMonster(int health = 70, int strength = 5, double hability = 90, std::string type = "blindmonster");
+    blindMonster(int health = DEFAULT_HEALTH, int strength = DEFAULT_STRENGTH, double hability = DEFAULT_HABILITY, std::string type = "blindmonster");
 
     /**
      * @brief Réecriture de la méthode virtuelle permettant à un monstre aveugle de se déplacer

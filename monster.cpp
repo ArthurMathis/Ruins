@@ -37,14 +37,14 @@ bool monster::isClose(std::shared_ptr<adventurer> &adventurer) const {
     // Calcul de la distance entre le monstre et l'aventurier
     int distance = position().distance(adventurer->position());
     // Renvoi de vrai si la distance est inférieur à 8
-    return distance < 8;
+    return distance < MOVE_TO_PLAYER_DISTANCE;
 }
 
 bool monster::isNearInfo(std::shared_ptr<adventurer> &adventurer) const {
     // Calcul de la distance entre le monstre et l'aventurier
     int distance = position().distance(adventurer->position());
     // Renvoi de vrai si la distance est égale à 1
-    return distance == 1;
+    return distance == INFO_DISTANCE;
 }
 
 int monster::direction(std::shared_ptr<adventurer> &adventurer) const
@@ -93,22 +93,27 @@ int monster::direction(std::shared_ptr<adventurer> &adventurer) const
     }
 }*/
 
+void monster::calculateNewPositionNotBlind(int direction, int &newX, int &newY) {
+    newX = position().x();
+    newY = position().y();
+
+    switch(direction) {
+        case 1: newX -= 1; break;
+        case 2: newX += 1; break;
+        case 3: newY += 1; break;
+        case 4: newY -= 1; break;
+        case 5: newX -= 1; newY -= 1; break;
+        case 6: newX -= 1; newY += 1; break;
+        case 7: newX += 1; newY -= 1; break;
+        case 8: newX += 1; newY += 1; break;
+    }
+}
+
 void monster::move(castle &castle, std::shared_ptr<adventurer> &adventurer, std::shared_ptr<monster> &monster) {
     if(isClose(adventurer)) {
-        int d = direction(adventurer);
-        int newX = position().x();
-        int newY = position().y();
+        int d = direction(adventurer), newX, newY;
 
-        switch(d) {
-            case 1: newX -= 1; break;
-            case 2: newX += 1; break;
-            case 3: newY += 1; break;
-            case 4: newY -= 1; break;
-            case 5: newX -= 1; newY -= 1; break;
-            case 6: newX -= 1; newY += 1; break;
-            case 7: newX += 1; newY -= 1; break;
-            case 8: newX += 1; newY += 1; break;
-        }
+        calculateNewPositionNotBlind(d, newX, newY);
 
         if(newX >= 0 && newY >= 0 && newX < castle.d_boxes.size() && newY < castle.d_boxes[0].size()) {
             if(castle.d_boxes[newX][newY].accessibility()) {

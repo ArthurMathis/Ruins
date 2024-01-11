@@ -15,6 +15,8 @@ class monster : public character {
 public :
     static constexpr int DEFAULT_HEALTH = 100;
     static constexpr int DEFAULT_STRENGTH = 10;
+    static constexpr int INFO_DISTANCE = 1;
+    static constexpr int MOVE_TO_PLAYER_DISTANCE = 8;
     static constexpr double DEFAULT_HABILITY = 90;
 
     /**
@@ -55,6 +57,8 @@ public :
     bool isClose(std::shared_ptr<adventurer> &adventurer) const;
 
     bool isNearInfo(std::shared_ptr<adventurer> &adventurer) const;
+
+    void calculateNewPositionNotBlind(int direction, int &newX, int &newY);
 
     /**
      * @brief Méthode retournant dans quelle direction se situe le joueur
