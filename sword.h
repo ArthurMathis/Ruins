@@ -5,6 +5,10 @@
 
 class sword: public equipment {
 public:
+    /**
+      * @brief Constructeur d'une épée
+      * @param solidity
+      */
     sword(int solidity);
 };
 

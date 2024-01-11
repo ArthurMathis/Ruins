@@ -11,44 +11,37 @@ monster::monster(int health, int strength, double hability, std::string type)
 {}
 
 int monster::hability() const {
-    // Renvoi du pourcentage d'habilité
     return d_hability;
 }
 
 void monster::attack(character &c) {
-    // Initialisation de la force d'attaque
     int attackStrength = d_strength;
-    // Génération d'un nombre aléatoire entre 0 et 99 et vérification de l'infériorité de ce nombre à 80
+    // Génération d'un nombre aléatoire entre 0 et 99 et vérification de l'infériorité de ce nombre à l'habilité
     if ((rand() % 100) < d_hability)
-        // Si la probabilité est générée inférieure au pourcentage d'habilité, on multiplie la force d'attaque par 0,9
         attackStrength = static_cast<int>(attackStrength * 0.9);
+
     // Lancement de l'attaque sur le personnage c
     c.hasBeenAttacked(attackStrength);
 }
 
 void monster::hasBeenAttacked(int attackStrengthPoints) {
-    // Initialisation des dégâts reçus par le monstre
     int monsterDamage = attackStrengthPoints;
-    // Réception des dégâts par le monstre
     getDamaged(monsterDamage);
 }
 
 bool monster::isClose(std::shared_ptr<adventurer> &adventurer) const {
-    // Calcul de la distance entre le monstre et l'aventurier
     int distance = position().distance(adventurer->position());
-    // Renvoi de vrai si la distance est inférieur à 8
     return distance < MOVE_TO_PLAYER_DISTANCE;
 }
 
 bool monster::isNearInfo(std::shared_ptr<adventurer> &adventurer) const {
-    // Calcul de la distance entre le monstre et l'aventurier
     int distance = position().distance(adventurer->position());
-    // Renvoi de vrai si la distance est égale à 1
     return distance == INFO_DISTANCE;
 }
 
 int monster::direction(std::shared_ptr<adventurer> &adventurer) const
 {
+    // (1): ↑ (2): ↓ (3): → (4): ← (5): ↖ (6): ↗ (7): ↙ (8): ↘
     if(position().y() > adventurer->position().y())
     {
         if(position().x() > adventurer->position().x()) return 5;
@@ -64,39 +57,15 @@ int monster::direction(std::shared_ptr<adventurer> &adventurer) const
     else
     {
         if(position().x() > adventurer->position().x()) return 1;
-        // if(position().x() < d_adventurer->position().x()) return 3;
     }
     return 2;
 }
-
-/*void monster::move(std::shared_ptr<adventurer> &adventurer) {
-    if(isClose(adventurer)) {
-        int d = direction(adventurer);
-        switch (d) {
-            case 1 : character::move(position().x(), position().y() + 1);
-                break;
-            case 2 : character::move(position().x(), position().y() - 1);
-                break;
-            case 3 : character::move(position().x() + 1, position().y());
-                break;
-            case 4 : character::move(position().x() - 1, position().y());
-                break;
-            case 5 : character::move(position().x() - 1, position().y() + 1);
-                break;
-            case 6 : character::move(position().x() + 1, position().y() + 1);
-                break;
-            case 7 : character::move(position().x() - 1, position().y() - 1);
-                break;
-            case 8 : character::move(position().x() + 1, position().y() - 1);
-                break;
-        }
-    }
-}*/
 
 void monster::calculateNewPositionNotBlind(int direction, int &newX, int &newY) {
     newX = position().x();
     newY = position().y();
 
+    // (1): ↑ (2): ↓ (3): → (4): ← (5): ↖ (6): ↗ (7): ↙ (8): ↘
     switch(direction) {
         case 1: newX -= 1; break;
         case 2: newX += 1; break;
@@ -115,8 +84,11 @@ void monster::move(castle &castle, std::shared_ptr<adventurer> &adventurer, std:
 
         calculateNewPositionNotBlind(d, newX, newY);
 
+        // Vérifier si la nouvelle case est à l'intérieur des limites du château
         if(newX >= 0 && newY >= 0 && newX < castle.d_boxes.size() && newY < castle.d_boxes[0].size()) {
+            // Vérifier si la nouvelle case est accessible et que le monstre peut y accéder
             if(castle.d_boxes[newX][newY].accessibility()) {
+                // On vérifie ce qu'on a fait du monstre en essayant de le mettre dans la case et on le bouge si nécessaire
                 int status = castle.d_boxes[newX][newY].putCharacter(monster);
                 
                 if(status == box::BX_MOVE_ON_ATTACK || status == box::BX_MOVE)

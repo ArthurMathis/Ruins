@@ -15,11 +15,13 @@ using std::string;
 
 class adventurer : public character {
 public:
+    /// Constantes par défaut
     static constexpr int DEFAULT_SWORDSOLIDITY = 90;
     static constexpr int DEFAULT_ARMORSOLIDITY = 10;
     static constexpr int DEFAULT_COINS = 0;
     static constexpr int DEFAULT_HEALTH = 100;
     static constexpr int DEFAULT_STRENGTH = 10;
+    static constexpr double DEFAULT_ATTACKPROBABILITY = 80.0;
 
     /**
      * @brief Constructeur par valeurs
@@ -37,12 +39,24 @@ public:
                std::string type = "adventurer");
 
     /**
-      * @brief Fonction renvoyant le nombre de pièces
-      * @return nombre de pièces
-      */
+     * @brief Fonction renvoyant le nombre de pièces.
+     * @return Le nombre de pièces.
+     */
     int coins() const;
+    /**
+     * @brief Récupère l'épée de l'aventurier.
+     * @return L'épée de l'aventurier.
+     */
     sword getSword() const;
+    /**
+     * @brief Récupère l'armure de l'aventurier.
+     * @return L'armure de l'aventurier.
+     */
     armor getArmor() const;
+    /**
+     * @brief Vérifie si l'aventurier possède un amulette.
+     * @return True si l'aventurier possède une amulette, False sinon.
+     */
     bool amulet() const;
 
     /**
@@ -57,31 +71,47 @@ public:
     void hasBeenAttacked(int attackStrength) override;
 
     /**
-     * @brief Fonction renvoyant le choix de déplacement de l'utilisateur
-     * @return la valeur correspondant au choix de déplacement
+     * @brief Affiche les informations de l'aventurier.
      */
-    // int moveChoice();
+    void info() const override;
     /**
-      * @brief Réecriture de la méthode virtuelle permettant ainsi à un aventurer de se déplacer
-      */
-    // void move() override;
+     * @brief Affiche l'aventurier dans l'interface graphique.
+     * @param d - L'objet de type display responsable de l'affichage.
+     */
+    void show(display &d) const override;
 
     /**
       * @brief Méthode permettant à un aventurier de gagner un nombre de pièce
       */
     void addCoins(int numberOfCoin);
-    void show(display &d) const override;
-
+    /**
+     * @brief Donne une amulette à l'aventurier.
+     */
     void takeAmulet();
-    void repairSword(int coinAmount);
-    void repairArmor(int coinAmount);
-    void reset() override;
-    void info() const override;
 
+    /**
+     * @brief Répare l'épée de l'aventurier en échange d'un certain montant de pièces.
+     * @param coinAmount - Le montant de pièces à payer pour la réparation.
+     */
+    void repairSword(int coinAmount);
+    /**
+     * @brief Répare l'armure de l'aventurier en échange d'un certain montant de pièces.
+     * @param coinAmount - Le montant de pièces à payer pour la réparation.
+     */
+    void repairArmor(int coinAmount);
+
+    /**
+     * @brief Réinitialise les attributs de l'aventurier à leurs valeurs par défaut.
+     */
+    void reset() override;
 private:
+    /// Nombre de pièces possédées par l'aventurier.
     int d_coins;
+    /// True si l'aventurier possède une amulette, False sinon.
     bool d_amulet;
+    /// Épée de l'aventurier.
     sword d_sword;
+    /// Armure de l'aventurier.
     armor d_armor;
 };
 

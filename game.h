@@ -74,33 +74,111 @@ using std::cout;
 
 class game {
 public:
+    /**
+      * @brief Constructeur par défaut de la classe game.
+      */
     game();
+
+    /**
+     * @brief Méthode pour afficher le menu principal et obtenir le choix de l'utilisateur.
+     * @return Le choix de l'utilisateur.
+     */
     int mainChoice() const;
-    void start();
-    void rules();
-    int moveChoiceAdv() const;
-    void loop();
-    int gameChoice() const;
-    void gameMenu();
-    void moveAdventurer();
-    void edit();
-    void end(bool res);
-    void showCastle();
-    // void playerInfo() const;
-    void repairSwordOrArmor();
-    void updateMonsters();
-    void loadMap();
-    void close();
+
+    /**
+     * @brief Méthode pour afficher les informations sur les monstres proches.
+     */
     void monsterInfo();
 
+    /**
+     * @brief Méthode pour afficher le château et les informations des personnages.
+     */
+    void showCastle();
+
+    /**
+     * @brief Méthode pour obtenir le choix du joueur pendant le jeu.
+     * @return Le choix du joueur.
+     */
+    int gameChoice() const;
+
+    /**
+     * @brief Méthode pour déplacer les monstres.
+     */
     void moveMonsters();
+
+    /**
+     * @brief Méthode pour mettre à jour la liste des monstres (supprimer les monstres morts).
+     */
+    void updateMonsters();
+
+    /**
+     * @brief Méthode pour obtenir le choix de déplacement de l'aventurier.
+     * @return Le choix de déplacement de l'aventurier.
+     */
+    int moveChoiceAdv() const;
+
+    /**
+     * @brief Méthode pour déplacer l'aventurier.
+     */
+    void moveAdventurer();
+
+    /**
+     * @brief Méthode pour réparer l'épée ou l'armure de l'aventurier.
+     */
+    void repairSwordOrArmor();
+
+    /**
+     * @brief Méthode pour quitter le jeu.
+     */
+    void close();
+
+    /**
+     * @brief Méthode pour gérer les actions du joueur pendant le jeu.
+     */
+    void gameMenu();
+
+    /**
+     * @brief Méthode pour afficher l'écran de fin de jeu.
+     * @param res Le résultat du jeu (victoire ou défaite).
+     */
+    void end(bool res);
+
+    /**
+     * @brief Méthode principale du jeu, gérant les tours du joueur.
+     */
+    void loop();
+
+    /**
+     * @brief Méthode pour charger une carte depuis un fichier.
+     */
+    void loadMap();
+
+    /**
+     * @brief Méthode pour éditer le château.
+     */
+    void edit();
+
+    /**
+     * @brief Méthode pour afficher les règles du jeu.
+     */
+    void rules();
+
+    /**
+     * @brief Méthode pour démarrer le jeu en fonction du choix de l'utilisateur.
+     */
+    void start();
 private:
+    /// Pointeur partagé vers l'objet aventurier.
     std::shared_ptr<adventurer> d_adventurer;
+    /// Vecteur de pointeurs partagés vers les objets monstre.
     vector<std::shared_ptr<monster>> d_monsters;
+    /// Objet de la classe display.
     display d;
+    /// Objet de la classe castle représentant le château du jeu.
     castle d_castle;
+    /// Coordonnées de l'entrée du château.
     coord d_entrance;
 };
 
 
-#endif //__CASE_H__
+#endif //__GAME_H__

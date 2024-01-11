@@ -9,6 +9,7 @@
 
 class blindMonster : public monster {
 public:
+    /// Constantes par défaut
     static constexpr int DEFAULT_HEALTH = 70;
     static constexpr int DEFAULT_STRENGTH = 5;
     static constexpr double DEFAULT_HABILITY = 90;
@@ -24,8 +25,16 @@ public:
 
     /**
      * @brief Réecriture de la méthode virtuelle permettant à un monstre aveugle de se déplacer
+     * @param castle - Le château où se déplace le monstre.
+     * @param adventurer - L'aventurier.
+     * @param monster - Le monstre aveugle.
      */
     void move(castle &castle, std::shared_ptr<adventurer> &adventurer, std::shared_ptr<monster> &monster) override;
+
+    /**
+     * @brief Affiche le monstre aveugle dans l'interface graphique.
+     * @param d - L'objet de type display responsable de l'affichage.
+     */
     void show(display &d) const override;
 };
 

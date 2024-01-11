@@ -21,7 +21,6 @@ void display::displayMonster()
 {
     std::cout << display::RED;
     std::cout << "M";
-    // std::cout << "👹";
     std::cout << display::WHITE;
 }
 
@@ -29,13 +28,11 @@ void display::displayBlindMonster()
 {
     std::cout << display::PURPLE;
     std::cout << "W";
-    // std::cout << "🧟";
     std::cout << display::WHITE;
 }
 
 void display::displayAmulet() {
     std::cout << display::CYAN;
-    // std::cout << "🧿";
     std::cout << "A";
     std::cout << display::WHITE;
 }
@@ -44,7 +41,6 @@ void display::displayWall()
 {
     std::cout << display::BLACK;
     std::cout << "#";
-    // std::cout << "🧱";
     std::cout << display::WHITE;
 }
 
@@ -64,7 +60,6 @@ void display::displayCoin()
 {
     std::cout << display::YELLOW;
     std::cout << "O";
-    // std::cout << "🪙";
     std::cout << display::WHITE;
 }
 

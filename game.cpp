@@ -38,25 +38,56 @@ int game::mainChoice() const
     return choice;
 }
 
-void game::start() {
-    int d = 0;
-    do {
-        d = mainChoice();
-        switch (d) {
-            case 1 : loop();
-                break;
-            case 2 : loadMap();
-                break;
-            case 3 : edit();
-                break;
-            case 4 : rules();
-                break;
-            case 5 : close();
-                break;
+void game::monsterInfo() {
+    // Aucun monstre n'est proche initialement
+    bool monsterNear = false;
+    int index = 0;
+    // On cherche s'il y a un premier monstre proche, pour récupérer son index puis on affichee le titre et ses infos
+    for(const auto& m : d_monsters) {
+        if(m->isNearInfo(d_adventurer)) {
+            cout << "----- INFO MONSTRES -----" << std::endl;
+            m->info();
+            cout << "-------------------------" << std::endl;
+            monsterNear = true;
+            break;
         }
-        cout << d;
-        d = 0;
-    } while(d != 5);
+        index++;
+    }
+
+    // Si il y avait un monstre proche, on reprend à partir de son index, et on affiche les autres proches
+    if(monsterNear) {
+        for (int i = index + 1; i < d_monsters.size(); i++) {
+            if(d_monsters[i]->isNearInfo(d_adventurer)) {
+                d_monsters[i]->info();
+                cout << "-------------------------" << std::endl;
+            }
+        }
+    }
+}
+
+void game::showCastle() {
+    clrscr();
+    int width = d_castle.d_boxes[0].size();
+
+    for(int i = 0; i < width; ++i)
+        cout << "+---";
+    cout << "+ ";
+
+    for (const auto& row : d_castle.d_boxes) {
+        cout << std::endl;
+        cout << "+";
+        for (const auto& box : row) {
+            cout << "  ";
+            box.show(d);
+            cout << " ";
+        }
+        cout << " +";
+    }
+    cout << std::endl << " ";
+
+    for(int i = 0; i < width; ++i)
+        cout << "+---";
+    cout << '+' << std::endl;
 }
 
 int game::gameChoice() const {
@@ -71,32 +102,21 @@ int game::gameChoice() const {
     return choice;
 }
 
-void game::gameMenu() {
-    int d = gameChoice();
-    switch (d) {
-        case 1 : moveAdventurer();
-            break;
-        case 2 : repairSwordOrArmor();
-            break;
-        case 3 : close();
-            break;
+void game::moveMonsters() {
+    for(auto &m : d_monsters) {
+        m->move(d_castle, d_adventurer, m);
     }
 }
 
-// !(dead || (amulet && position))
-// !dead
-void game::loop()
+void game::updateMonsters()
 {
-    bool result;
-    while(!d_adventurer->isDead() && !(d_adventurer->amulet() && d_adventurer->position() == d_entrance)) {
-        showCastle();
-        gameMenu();
+    int i = 0;
+    while(i < d_monsters.size()) {
+        if(d_monsters[i]->isDead())
+            d_monsters.erase(d_monsters.begin() + i);
+        else
+            i++;
     }
-    if(d_adventurer->amulet() && d_adventurer->position() == d_entrance)
-        result = true;
-    else
-        result = false;
-    end(result);
 }
 
 int game::moveChoiceAdv() const
@@ -119,6 +139,7 @@ void game::moveAdventurer() {
         int lig = d_adventurer->position().x();
         int col = d_adventurer->position().y();
 
+        // Calcul des nouvelles coordonnées en fonction du choix de direction de l'utilisateur
         switch(moveA) {
             case 1: lig -= 1; break;
             case 2: lig += 1; break;
@@ -130,9 +151,12 @@ void game::moveAdventurer() {
             case 8: col += 1; lig += 1; break;
         }
 
+        // Vérifier si la nouvelle case est à l'intérieur des limites du château
         if(lig >= 0 && col >= 0 && lig < d_castle.d_boxes.size() && col < d_castle.d_boxes[0].size()) {
+            // Vérifier si la nouvelle case est accessible et que l'aventurier peut y accéder
             if(d_castle.d_boxes[lig][col].accessibility())
             {
+                // On vérifie ce qu'on a fait de l'aventurier en essayant de le mettre dans la case et on le bouge si nécessaire
                 int status = d_castle.d_boxes[lig][col].putCharacter(d_adventurer);
 
                 if(status == box::BX_AVOID)
@@ -152,13 +176,11 @@ void game::moveAdventurer() {
                     }
                     d_castle.d_boxes[d_adventurer->position().x()][d_adventurer->position().y()].removeCharacter();
                     d_adventurer->move(lig, col);
-                    updateMonsters();
-                    moveMonsters();
                     break;
                 }
             }
             else
-            cout << "Déplacement impossible" << std::endl;
+                cout << "Déplacement impossible" << std::endl;
         }
     } while(moveA > 0 && moveA <= 8);
 }
@@ -199,24 +221,22 @@ void game::repairSwordOrArmor() {
     askcontinue();
 }
 
-// Delete the dead monsters
-void game::updateMonsters()
-{
-    int i = 0;
-    while(i < d_monsters.size())
-    {
-        if(d_monsters[i]->isDead())
-            d_monsters.erase(d_monsters.begin() + i);
-        else
-            i++;
-    }
+void game::close() {
+    cout << "À bientôt !" << std::endl;
+    std::exit(0);
 }
 
-
-void game::moveMonsters() {
-    for(auto &m : d_monsters)
-    {
-        m->move(d_castle, d_adventurer, m);
+void game::gameMenu() {
+    int d = gameChoice();
+    switch (d) {
+        case 1 : moveAdventurer();
+                 updateMonsters();
+                 moveMonsters();
+            break;
+        case 2 : repairSwordOrArmor();
+            break;
+        case 3 : close();
+            break;
     }
 }
 
@@ -268,82 +288,20 @@ void game::end(bool res) {
     }
 }
 
-void game::rules() {
-    clrscr();
-    // cout << ":\n";
-    // cout << "- l'utilisateur deplace l'aventurier; si l'aventurier est sur un tas de pieces de monnaie, il les ramasse.\n";
-    // cout << "- chaque monstre se deplace; si un monstre se deplace sur l'aventurier alors il l'attaque.\n";
-    // cout << "- le joueur peut choisir de reparer son equipement avec des pieces d'or.\n";
-    // cout << "  - Une piece d'or repare un point de solidite de l'epee ou de l'armure.\n";
-    // cout << "  - L'epee perd un point de solidite a chaque attaque.\n";
-    // cout << "  - L'armure perd des points de solidite lors d'attaques de monstres.\n";
-    // cout << "  - Les points repares sont pris a partir des pieces d'or dans la bourse de l'aventurier.\n";
-    // cout << "- le jeu se termine soit quand l'aventurier est mort, soit quand il est a la sortie du chateau avec l'amulette.\n";
-    cout << RULES;
-    askcontinue();
-
-}
-
-void game::edit() {
-    clrscr();
-    cout << "Pour éditer le château, veuillez modifier le fichier defaultCastle.txt ou créer un nouveau fichier .txt en utilisant la légende suivante :" << std::endl << std::endl;
-    cout << LEGEND;
-    cout << std::endl;
-    askcontinue();
-
-}
-
-void game::monsterInfo() {
-    bool monsterNear = false;
-    int index = 0;
-
-    for(const auto& m : d_monsters) {
-        if(m->isNearInfo(d_adventurer)) {
-            cout << "----- INFO MONSTRES -----" << std::endl;
-            m->info();
-            cout << "-------------------------" << std::endl;
-            monsterNear = true;
-            break;
-        }
-        index++;
+void game::loop()
+{
+    bool result;
+    while(!d_adventurer->isDead() && !(d_adventurer->amulet() && d_adventurer->position() == d_entrance)) {
+        showCastle();
+        d_adventurer->info();
+        monsterInfo();
+        gameMenu();
     }
-
-    if(monsterNear) {
-        // cout << "----- INFO MONSTRES -----" << std::endl;
-
-        for (int i = index + 1; i < d_monsters.size(); i++) {
-            if(d_monsters[i]->isNearInfo(d_adventurer)) {
-                d_monsters[i]->info();
-                cout << "-------------------------" << std::endl;
-            }
-        }
-    }
-}
-
-void game::showCastle() {
-    clrscr();
-    int width = d_castle.d_boxes[0].size();
-
-    for(int i = 0; i < width; ++i)
-        cout << "+---";
-    cout << "+ ";
-
-    for (const auto& row : d_castle.d_boxes) {
-        cout << std::endl;
-        cout << "+";
-        for (const auto& box : row) {
-            cout << "  ";
-            box.show(d);
-            cout << " ";
-        }
-        cout << " +";
-    }
-    cout << std::endl << " ";
-    for(int i = 0; i < width; ++i)
-        cout << "+---";
-    cout << '+' << std::endl;
-    d_adventurer->info();
-    monsterInfo();
+    if(d_adventurer->amulet() && d_adventurer->position() == d_entrance)
+        result = true;
+    else
+        result = false;
+    end(result);
 }
 
 void game::loadMap() {
@@ -358,11 +316,38 @@ void game::loadMap() {
     }
 
     askcontinue();
-
 }
 
-void game::close()
-{
-    cout << "À bientôt !" << std::endl;
-    std::exit(0);
+void game::edit() {
+    clrscr();
+    cout << "Pour éditer le château, veuillez créer un nouveau fichier .txt en utilisant la légende suivante, puis la charger :" << std::endl << std::endl;
+    cout << LEGEND;
+    cout << std::endl;
+    askcontinue();
+}
+
+void game::rules() {
+    clrscr();
+    cout << RULES;
+    askcontinue();
+}
+
+void game::start() {
+    int d = 0;
+    do {
+        d = mainChoice();
+        switch (d) {
+            case 1 : loop();
+                break;
+            case 2 : loadMap();
+                break;
+            case 3 : edit();
+                break;
+            case 4 : rules();
+                break;
+            case 5 : close();
+                break;
+        }
+        d = 0;
+    } while(d != 5);
 }

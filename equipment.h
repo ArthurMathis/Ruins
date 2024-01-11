@@ -1,36 +1,48 @@
-#ifndef __equipment_H__
-#define __equipment_H__
+#ifndef __EQUIPMENT_H__
+#define __EQUIPMENT_H__
 
 class equipment {
 public:
     /**
-       * @brief Construct a new object object
-       * @param solidity le point de solidité de l'équipement crée
-       */
+     * @brief Constructeur de la classe equipment.
+     *
+     * @param solidity Le point de solidité de l'équipement créé.
+     */
     equipment(int solidity);
+
     /**
-        * @brief Renvoie le solidité de l'équipement
-        *
-        * @return int
-        */
+     * @brief Renvoie le point de solidité de l'équipement.
+     *
+     * @return int La solidité de l'équipement.
+     */
     int solidity() const;
+
     /**
-        * @brief Reduit le point de solidité d'un équipement
-        * @pre nb > 0
-        * @param nb nombre de reduction
-        */
+     * @brief Réduit le point de solidité de l'équipement.
+     *
+     * @pre nb > 0
+     * @param nb Le nombre de réduction.
+     */
     void reduce(int nb);
+
     /**
-        * @brief Augmente le point de solidité d'un équipement
-        * @pre nb > 0
-        * @param nb nombre d'augmentation
-        */
+     * @brief Augmente le point de solidité de l'équipement.
+     *
+     * @pre nb > 0
+     * @param nb Le nombre d'augmentation.
+     */
     void increase(int nb);
 
+    /**
+     * @brief Modifie la solidité de l'équipement avec une nouvelle valeur.
+     *
+     * @param value La nouvelle valeur de solidité.
+     */
     void setSolidity(int value);
+
 private:
-    /// point de solidité
+    /// Le point de solidité de l'équipement.
     int d_solidity;
 };
 
-#endif
+#endif // __EQUIPMENT_H__

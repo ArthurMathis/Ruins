@@ -12,33 +12,8 @@
 blindMonster::blindMonster(int health, int strength, double hability, std::string type)
     : monster{health, strength, hability, type} {}
 
-/*void blindMonster::move(castle &castle, std::shared_ptr<adventurer> &adventurer, std::shared_ptr<monster> &monster) {
-    // Génère un déplacement aléatoire pour X et Y
-    int X, Y;
-    // Génération d'un nombre aléatoire entre -1 et 1 pour le déplacement aléatoire
-    do {
-        X = rand() % 3 - 1;
-        Y = rand() % 3 - 1;
-    } while (X == 0 && Y == 0); // Nouvelle génération si les deux sont nuls car le monstre doit bouger
-
-    // Nouvelles coordonnées
-    int newX = position().x() + X;
-    int newY = position().y() + Y;
-
-    if (newX >= 0 && newY >= 0 && newX < castle.d_boxes.size() && newY < castle.d_boxes[0].size()) {
-        // Vérifier si la nouvelle case est accessible
-        if (castle.d_boxes[newX][newY].accessibility()) {
-            // Retirer le monstre de son ancienne position dans le château
-            castle.d_boxes[position().x()][position().y()].removeCharacter();
-            // Déplacer le monstre vers la nouvelle position
-            character::move(newX, newY);
-            // Placer le monstre dans la nouvelle case du château
-            castle.d_boxes[newX][newY].putCharacter(monster);
-        }
-    }
-}*/
-
 void blindMonster::move(castle &castle, std::shared_ptr<adventurer> &adventurer, std::shared_ptr<monster> &monster) {
+    // Les 8 déplacements possibles
     int possibleX[] = {0, 0, -1, 1, -1, 1, -1, 1};
     int possibleY[] = {1, -1, 0, 0, 1, 1, -1, -1};
 
@@ -57,6 +32,7 @@ void blindMonster::move(castle &castle, std::shared_ptr<adventurer> &adventurer,
         if(newX >= 0 && newY >= 0 && newX < castle.d_boxes.size() && newY < castle.d_boxes[0].size()) {
             // Vérifier si la nouvelle case est accessible et que le monstre peut y accéder
             if(castle.d_boxes[newX][newY].accessibility()) {
+                // On vérifie ce qu'on a fait du monstre en essayant de le mettre dans la case et on le bouge si nécessaire
                 int status = castle.d_boxes[newX][newY].putCharacter(monster);
                 
                 if(status == box::BX_MOVE_ON_ATTACK || status == box::BX_MOVE)
