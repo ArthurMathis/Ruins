@@ -117,6 +117,8 @@ public:
      */
     int moveChoiceAdv() const;
 
+    bool monsterCanMove(const coord &newPosition) const;
+
     /**
      * @brief Méthode pour déplacer l'aventurier.
      */

@@ -24,12 +24,11 @@ public:
     blindMonster(int health = DEFAULT_HEALTH, int strength = DEFAULT_STRENGTH, double hability = DEFAULT_HABILITY, std::string type = "blindmonster");
 
     /**
-     * @brief Réecriture de la méthode virtuelle permettant à un monstre aveugle de se déplacer
-     * @param castle - Le château où se déplace le monstre.
+     * @brief Réecriture de la méthode virtuelle permettant à un monstre aveugle de générer de nouvelles positions
      * @param adventurer - L'aventurier.
-     * @param monster - Le monstre aveugle.
+     * @return Les nouvelles coordonnées.
      */
-    void move(castle &castle, std::shared_ptr<adventurer> &adventurer, std::shared_ptr<monster> &monster) override;
+    coord generateNewPosition(std::shared_ptr<adventurer> &adventurer) const override;
 
     /**
      * @brief Affiche le monstre aveugle dans l'interface graphique.

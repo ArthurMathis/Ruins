@@ -102,9 +102,43 @@ int game::gameChoice() const {
     return choice;
 }
 
+bool game::monsterCanMove(const coord &newPosition) const {
+    bool posValid = newPosition.x() >= 0 && newPosition.y() >= 0 && newPosition.x() < d_castle.d_boxes.size() && newPosition.y() < d_castle.d_boxes[0].size();
+
+    if(posValid)
+        // Vérifier si la nouvelle case est accessible et que le monstre peut y accéder
+        return d_castle.d_boxes[newPosition.x()][newPosition.y()].accessibility();
+    return false;
+    /*if(newPosition.x() >= 0 && newPosition.y() >= 0 && newPosition.x() < d_castle.d_boxes.size() && newPosition.y() < d_castle.d_boxes[0].size()) {
+        // Vérifier si la nouvelle case est accessible et que le monstre peut y accéder
+        if(d_castle.d_boxes[newPosition.x()][newPosition.y()].accessibility()) {
+            // On vérifie ce qu'on a fait du monstre en essayant de le mettre dans la case et on le bouge si nécessaire
+            int status = d_castle.d_boxes[newPosition.x()][newPosition.y()].putCharacter(m);
+
+            if(status == box::BX_MOVE_ON_ATTACK || status == box::BX_MOVE)
+            {
+                d_castle.d_boxes[m->position().x()][m->position().y()].removeCharacter();
+                m->character::move(newPosition.x(), newPosition.y());
+            }
+        }
+    }*/
+}
+
 void game::moveMonsters() {
     for(auto &m : d_monsters) {
-        m->move(d_castle, d_adventurer, m);
+        coord newPosition = m->generateNewPosition(d_adventurer);
+        if(newPosition != m->position()) {
+            if(monsterCanMove(newPosition)) {
+                // On vérifie ce qu'on a fait du monstre en essayant de le mettre dans la case et on le bouge si nécessaire
+                int status = d_castle.d_boxes[newPosition.x()][newPosition.y()].putCharacter(m);
+
+                if(status == box::BX_MOVE_ON_ATTACK || status == box::BX_MOVE)
+                {
+                    d_castle.d_boxes[m->position().x()][m->position().y()].removeCharacter();
+                    m->move(newPosition.x(), newPosition.y());
+                }
+            }
+        }
     }
 }
 

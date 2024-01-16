@@ -73,22 +73,11 @@ public :
     int direction(std::shared_ptr<adventurer> &adventurer) const;
 
     /**
-     * @brief Calcule la nouvelle position du monstre voyant en fonction de la direction.
-     *
-     * @param direction Direction du déplacement.
-     * @param newX Nouvelle coordonnée x.
-     * @param newY Nouvelle coordonnée y.
+     * @brief Méthode permettant à un monstre de générer de nouvelles positions.
+     * @param adventurer - L'aventurier.
+     * @return Les nouvelles coordonnées.
      */
-    void calculateNewPositionNotBlind(int direction, int &newX, int &newY);
-
-    /**
-     * @brief Méthode virtuelle permettant à un monstre de se déplacer en fonction de l'aventurier
-     *
-     * @param castle Château.
-     * @param adventurer Aventurier.
-     * @param monster Le monstre lui même.
-     */
-    virtual void move(castle &castle, std::shared_ptr<adventurer> &adventurer, std::shared_ptr<monster> &monster);
+    virtual coord generateNewPosition(std::shared_ptr<adventurer> &adventurer) const;
 
     /**
      * @brief Affiche le monstre dans l'interface graphique.

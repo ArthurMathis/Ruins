@@ -61,44 +61,46 @@ int monster::direction(std::shared_ptr<adventurer> &adventurer) const
     return 2;
 }
 
-void monster::calculateNewPositionNotBlind(int direction, int &newX, int &newY) {
-    newX = position().x();
-    newY = position().y();
-
-    // (1): ↑ (2): ↓ (3): → (4): ← (5): ↖ (6): ↗ (7): ↙ (8): ↘
-    switch(direction) {
-        case 1: newX -= 1; break;
-        case 2: newX += 1; break;
-        case 3: newY += 1; break;
-        case 4: newY -= 1; break;
-        case 5: newX -= 1; newY -= 1; break;
-        case 6: newX -= 1; newY += 1; break;
-        case 7: newX += 1; newY -= 1; break;
-        case 8: newX += 1; newY += 1; break;
-    }
-}
-
-void monster::move(castle &castle, std::shared_ptr<adventurer> &adventurer, std::shared_ptr<monster> &monster) {
+coord monster::generateNewPosition(std::shared_ptr<adventurer> &adventurer) const {
     if(isClose(adventurer)) {
-        int d = direction(adventurer), newX, newY;
+        int dir = direction(adventurer);
+        int newX = position().x();
+        int newY = position().y();
 
-        calculateNewPositionNotBlind(d, newX, newY);
-
-        // Vérifier si la nouvelle case est à l'intérieur des limites du château
-        if(newX >= 0 && newY >= 0 && newX < castle.d_boxes.size() && newY < castle.d_boxes[0].size()) {
-            // Vérifier si la nouvelle case est accessible et que le monstre peut y accéder
-            if(castle.d_boxes[newX][newY].accessibility()) {
-                // On vérifie ce qu'on a fait du monstre en essayant de le mettre dans la case et on le bouge si nécessaire
-                int status = castle.d_boxes[newX][newY].putCharacter(monster);
-                
-                if(status == box::BX_MOVE_ON_ATTACK || status == box::BX_MOVE)
-                {
-                    castle.d_boxes[position().x()][position().y()].removeCharacter();
-                    character::move(newX, newY);
-                }
-            }
+        // (1): ↑ (2): ↓ (3): → (4): ← (5): ↖ (6): ↗ (7): ↙ (8): ↘
+        switch (dir) {
+            case 1:
+                newX -= 1;
+                break;
+            case 2:
+                newX += 1;
+                break;
+            case 3:
+                newY += 1;
+                break;
+            case 4:
+                newY -= 1;
+                break;
+            case 5:
+                newX -= 1;
+                newY -= 1;
+                break;
+            case 6:
+                newX -= 1;
+                newY += 1;
+                break;
+            case 7:
+                newX += 1;
+                newY -= 1;
+                break;
+            case 8:
+                newX += 1;
+                newY += 1;
+                break;
         }
+        return {newX, newY};
     }
+    return position();
 }
 
 void monster::show(display &d) const
